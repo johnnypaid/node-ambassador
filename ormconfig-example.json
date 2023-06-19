@@ -1,0 +1,11 @@
+{
+  "type": "test",
+  "host": "test",
+  "port": 12345,
+  "username": "test",
+  "password": "test",
+  "database": "test",
+  "synchronize": true,
+  "logging": false,
+  "entities": ["test"]
+}
