@@ -84,3 +84,45 @@ export const Logout = async (req: Request, res: Response) => {
 
   res.send({ message: "success" });
 };
+
+export const UpdateInfo = async (req: Request, res: Response) => {
+  try {
+    const user = req["user"]; // authenticated user from the middleware req["user"]
+    const repository = getRepository(User);
+
+    await repository.update(user.id, req.body);
+
+    res.send(await repository.findOneBy({ id: user.id }));
+  } catch (error) {
+    console.log(error);
+    res.status(400).send({
+      message: "Something went wrong!",
+    });
+  }
+};
+
+export const UpdatePassword = async (req: Request, res: Response) => {
+  try {
+    const user = req["user"]; // authenticated user from the middleware req["user"]
+
+    if (req.body.password !== req.body.password_confirm) {
+      return res.status(400).send({
+        message: "Password's did not match!",
+      });
+    }
+
+    const userInfo = getRepository(User);
+    const userInfoToUpdate = await userInfo.findOneBy({ id: user.id });
+
+    userInfoToUpdate.password = await bcrypt.hash(req.body.password, 10);
+
+    await userInfo.save(userInfoToUpdate);
+
+    res.send(user);
+  } catch (error) {
+    console.log(error);
+    res.status(400).send({
+      message: "Something went wrong!",
+    });
+  }
+};
