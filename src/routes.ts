@@ -7,6 +7,7 @@ import {
   UpdateInfo,
   UpdatePassword,
 } from "./controller/auth.controller";
+import { Ambassadors } from "./controller/user.controller";
 import { AuthMiddleware } from "./middleware/auth.middleware";
 
 export const routes = (router: Router) => {
@@ -16,4 +17,5 @@ export const routes = (router: Router) => {
   router.post("/api/admin/logout", AuthMiddleware, Logout);
   router.post("/api/admin/users/info", AuthMiddleware, UpdateInfo);
   router.post("/api/admin/users/password", AuthMiddleware, UpdatePassword);
+  router.get("/api/admin/ambassadors", AuthMiddleware, Ambassadors);
 };
