@@ -7,6 +7,13 @@ import {
   UpdateInfo,
   UpdatePassword,
 } from "./controller/auth.controller";
+import {
+  CreateProducts,
+  DeleteProduct,
+  GetProduct,
+  Products,
+  UpdateProduct,
+} from "./controller/product.controller";
 import { Ambassadors } from "./controller/user.controller";
 import { AuthMiddleware } from "./middleware/auth.middleware";
 
@@ -18,4 +25,9 @@ export const routes = (router: Router) => {
   router.post("/api/admin/users/info", AuthMiddleware, UpdateInfo);
   router.post("/api/admin/users/password", AuthMiddleware, UpdatePassword);
   router.get("/api/admin/ambassadors", AuthMiddleware, Ambassadors);
+  router.get("/api/admin/products", AuthMiddleware, Products);
+  router.post("/api/admin/products/", AuthMiddleware, CreateProducts);
+  router.get("/api/admin/products/:id", AuthMiddleware, GetProduct);
+  router.put("/api/admin/products/:id", AuthMiddleware, UpdateProduct);
+  router.delete("/api/admin/products/:id", AuthMiddleware, DeleteProduct);
 };
