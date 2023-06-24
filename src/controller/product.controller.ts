@@ -1,5 +1,4 @@
-import { RSA_NO_PADDING } from "constants";
-import { Request, response, Response } from "express";
+import { Request, Response } from "express";
 import { getRepository } from "typeorm";
 import { Product } from "../entity/product.entity";
 
