@@ -7,7 +7,7 @@ createConnection().then(async () => {
   const repository = getRepository(User);
   const password = await bcrypt.hash("1234", 10);
 
-  for (let i = 0; i < 20; i++) {
+  for (let i = 1; i < 29; i++) {
     await repository.save({
       first_name: faker.person.firstName(),
       last_name: faker.person.lastName(),

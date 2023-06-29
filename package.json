@@ -6,7 +6,9 @@
   "scripts": {
     "start": "nodemon src/app.ts",
     "seed:ambassadors": "ts-node src/seeder/ambassador.seeder.ts",
-    "seed:product": "ts-node src/seeder/product.seeder.ts"
+    "seed:product": "ts-node src/seeder/product.seeder.ts",
+    "seed:links": "ts-node src/seeder/link.seeder.ts",
+    "seed:orders": "ts-node src/seeder/order.seeder.ts"
   },
   "author": "",
   "license": "ISC",

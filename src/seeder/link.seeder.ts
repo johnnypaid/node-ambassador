@@ -1,17 +1,20 @@
 import { createConnection, getRepository } from "typeorm";
-import { Product } from "../entity/product.entity";
 import { faker } from "@faker-js/faker";
 import { randomInt } from "crypto";
+import { Link } from "../entity/link.entity";
+import { User } from "../entity/user.entity";
 
 createConnection().then(async () => {
-  const repository = getRepository(Product);
+  const repository = getRepository(Link);
 
-  for (let i = 1; i < 29; i++) {
+  for (let i = 0; i < 29; i++) {
+    const user = new User();
+    user.id = i + 1;
+
     await repository.save({
-      title: faker.lorem.words(2),
-      description: faker.lorem.words(10),
-      image: faker.image.imageUrl(200, 200, "", true),
-      price: randomInt(10, 100),
+      code: faker.random.alphaNumeric(6),
+      user,
+      price: [randomInt(1, 30)],
     });
   }
 
