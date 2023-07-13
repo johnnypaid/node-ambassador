@@ -8,7 +8,8 @@
     "seed:ambassadors": "ts-node src/seeder/ambassador.seeder.ts",
     "seed:product": "ts-node src/seeder/product.seeder.ts",
     "seed:links": "ts-node src/seeder/link.seeder.ts",
-    "seed:orders": "ts-node src/seeder/order.seeder.ts"
+    "seed:orders": "ts-node src/seeder/order.seeder.ts",
+    "update:rankings": "ts-node src/seeder/rankings.ts"
   },
   "author": "",
   "license": "ISC",
@@ -21,7 +22,10 @@
     "faker": "^6.6.6",
     "jsonwebtoken": "^9.0.0",
     "mysql2": "^3.3.5",
+    "nodemailer": "^6.9.3",
+    "redis": "^4.6.7",
     "reflect-metadata": "^0.1.13",
+    "stripe": "^12.12.0",
     "typeorm": "^0.3.16"
   },
   "devDependencies": {
@@ -34,6 +38,8 @@
     "@types/faker": "^6.6.9",
     "@types/jsonwebtoken": "^9.0.2",
     "@types/node": "^20.3.1",
+    "@types/nodemailer": "^6.4.8",
+    "@types/stripe": "^8.0.417",
     "nodemon": "^2.0.22",
     "ts-node": "^10.9.1",
     "typescript": "^5.1.3"

@@ -71,4 +71,9 @@ export class Order {
   get total(): number {
     return this.order_items.reduce((s, item) => s + item.admin_revenue, 0); // each time it will loop it increases the s variable.
   }
+
+  // get total of ambassado revenue
+  get ambassadorTotal(): number {
+    return this.order_items.reduce((s, item) => s + item.ambassador_revenue, 0);
+  }
 }

@@ -3,6 +3,7 @@ import { getRepository } from "typeorm";
 import { User } from "../entity/user.entity";
 import bcrypt from "bcryptjs";
 import { sign, verify } from "jsonwebtoken";
+import { Order } from "../entity/order.entity";
 
 export const Register = async (req: Request, res: Response) => {
   try {
@@ -23,8 +24,10 @@ export const Register = async (req: Request, res: Response) => {
     const user = await getRepository(User).save({
       ...body,
       password: await bcrypt.hash(password, 10),
-      is_ambassador: false,
+      is_ambassador: req.path === "/api/ambassador/register",
     });
+
+    delete user.password;
 
     res.send(user);
   } catch (error) {
@@ -37,7 +40,7 @@ export const Register = async (req: Request, res: Response) => {
 export const Login = async (req: Request, res: Response) => {
   try {
     const user = await getRepository(User).findOne({
-      select: { id: true, password: true },
+      select: { id: true, password: true, is_ambassador: true },
       where: { email: req.body.email },
     });
 
@@ -53,9 +56,19 @@ export const Login = async (req: Request, res: Response) => {
       });
     }
 
+    const adminLogin = req.path === "/api/admin/login";
+
+    // If user is ambassador and trying to login to admin path
+    if (user.is_ambassador && adminLogin) {
+      return res.status(401).send({
+        message: "Unauthorized",
+      });
+    }
+
     const token = sign(
       {
         id: user.id,
+        scope: adminLogin ? "admin" : "ambassador",
       },
       process.env.SECRET_KEY
     );
@@ -76,7 +89,22 @@ export const Login = async (req: Request, res: Response) => {
 };
 
 export const AuthenticatedUser = async (req: Request, res: Response) => {
-  res.send(req["user"]);
+  const user = req["user"];
+
+  // If admin just return the user
+  if (req.path === "/api/admin/user") {
+    res.send(user);
+  }
+
+  // If ambassador get the orders
+  const orders = await getRepository(Order).find({
+    where: { user_id: user.id, complete: true },
+    relations: ["order_items"],
+  });
+
+  user.revenue = orders.reduce((s, o) => s + o.ambassadorTotal, 0);
+
+  res.send(user);
 };
 
 export const Logout = async (req: Request, res: Response) => {
@@ -94,7 +122,6 @@ export const UpdateInfo = async (req: Request, res: Response) => {
 
     res.send(await repository.findOneBy({ id: user.id }));
   } catch (error) {
-    console.log(error);
     res.status(400).send({
       message: "Something went wrong!",
     });

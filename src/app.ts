@@ -4,10 +4,18 @@ import { createConnection } from "typeorm";
 import { routes } from "./routes";
 import dotenv from "dotenv";
 import cookieParser from "cookie-parser";
+import { createClient } from "redis";
 
 dotenv.config();
 
-createConnection().then(() => {
+export const client = createClient({
+  url: "redis://redis:6379", // http:// + value from docker compose(redis)
+});
+
+createConnection().then(async () => {
+  // connect to redis
+  await client.connect();
+
   const app = express();
 
   // middleware

@@ -8,6 +8,8 @@ services:
       - .:/app
     depends_on:
       - db
+      - redis
+      - mailhog
 
   db:
     # platform: linux/x86_64 // if ui=sing m1 chip mac
@@ -22,3 +24,16 @@ services:
       - .dbdata:/var/lib/mysql
     ports:
       - "33066:3306"
+
+  redis:
+    image: redis
+    ports:
+      - "6379:6379"
+
+  mailhog:
+    image: mailhog/mailhog
+    logging:
+      driver: "none" # disable saving logs
+    ports:
+      - 1025:1025 # smtp server
+      - 8025:8025 # web ui
